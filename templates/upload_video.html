@@ -1,0 +1,393 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>BoxOffice | Profile</title>
+{% endblock %}
+
+{% block style %}
+<style>
+
+label {
+    color: black;
+    font-weight: bold;
+}
+
+    #wrapper {
+        display: flex;
+        margin-top: -62px;
+    }
+
+    .sidebar {
+        width: 19rem !important;
+        background: linear-gradient(0deg, #2196F3, #00106b);
+        padding-top: 80px;
+    }
+
+    #content-wrapper {
+        background-color: #e6e6e6;
+        width: 100%;
+        height: 100vh;
+        padding-top: 60px;
+        overflow-x: hidden;
+    }
+
+    .active {
+        background: white;
+        box-shadow: -1px 1px 13px 2px;
+    }
+
+    .nav-item:hover {
+        background: #e0e0e0;
+        box-shadow: -1px 1px 13px 2px;
+    }
+
+    .active-link,
+    .nav-link:hover {
+        color: #021045;
+        display: block;
+        padding: .5rem 0rem;
+    }
+
+    .nav-item {
+        padding: 0px 20px;
+        border-radius: 10px;
+        margin: 5px 5px;
+    }
+
+    .nav-item a {
+        font-size: 19px;
+        font-weight: 500;
+        text-decoration: none;
+        color: #021045;
+    }
+
+    a.nav-link {
+        color: white;
+    }
+
+    i {
+        padding-right: 5px;
+    }
+
+    .round {
+        padding: 20px;
+        border-radius: 20px;
+        min-height: 250px;
+    }
+
+    .poster {
+        margin: 15px;
+
+    }
+</style>
+
+
+<style>
+    .bg {
+        background: linear-gradient(to right, rgba(138, 181, 206, 0), #000),
+        url({{movies.movie_poster.url}});
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+        height: 100vh;
+    }
+
+    .bl {
+        background: black;
+    }
+
+    .right-c {
+        margin-top: 150px;
+        color: #fff;
+    }
+
+    .pillow {
+        background: rgba(0, 0, 0, 0.13);
+        border-radius: 50px;
+        color: white;
+        border: solid 1px whitesmoke;
+        padding: 5px 10px;
+        text-align: center;
+        width: 60%;
+    }
+
+    .title {
+        font-size: 50px;
+        padding: 10px 0px;
+    }
+
+    .rate {
+        margin: 10px 0px;
+        margin-left: 30px;
+    }
+
+    .rate i {
+        text-shadow: 0 0 5px white;
+        color: red;
+    }
+
+    .desc {
+        margin: 5px 50px 5px 5px;
+    }
+
+    .btn-custom {
+        background: linear-gradient(320deg, blue, red);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        width: 230px;
+        margin: 5px;
+    }
+
+    .btn-custom i {
+        padding: 0px 5px;
+    }
+
+    .btn-custom:hover {
+        color: #fff;
+        border: solid 2px white;
+        background: transparent;
+    }
+
+    .time {
+        margin: 5px;
+        display: inline;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav sidebar ">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard' %}">
+                <i class="fa fa-tachometer"></i>
+                <span>Dashboard</span></a>
+        </li>
+
+        
+        
+        <li class="nav-item active">
+            <a class="active-link" href="{% url 'upload_video' %}">
+                <i class="fa fa-ticket"></i>
+                <span>Upload Video</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'earnings' %}">
+                <i class="fas fa-rupee-sign    "></i>
+                <span>Earnings</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">
+                <i class="fa fa-sign-out"></i>
+                <span>Logout</span></a>
+        </li>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div class="row m-3">
+            <!-- <div class="col-12 card round">
+                <h5 class="display-4">Add Shows at {{user.cinema.cinema_name}}</h5>
+                <hr>
+
+
+                {% for message in messages %}
+                <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %} -->
+            <form action="{% url 'upload_video' %}" method="POST"  enctype="multipart/form-data">
+                    {% csrf_token %}
+                
+                <!-- <div class="row p-4">
+                    <div class="col-12">
+                            <div class="form-row justify-content-center">
+                                <div class="col-2">
+                                    <select id="inputState" class="form-control" name="m">
+                                        <option>Choose Movie</option>
+                                        {% for list in mov %}
+                                        <option value="{{list.movie}}">{{ list.movie_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            
+                                <div class="col-3">
+                                    <input type="date" class="form-control" placeholder="Date" name="d">
+                                </div>
+                                <div class="col-2">
+                                    <input type="time" class="form-control" placeholder="Time" name="t">
+                                </div>
+                                <div class="col-2">
+                                    <input type="text" class="form-control" placeholder="Ticket Price (Rs)" name="p">
+                                </div>
+                            </div>
+                        </div>
+                    
+                </div> -->
+
+                <div class="row p-4">
+                    <div class="col-12">
+                            <div class="form-row justify-content-center">  
+                                <div class="col-2">
+                                    <label >Movie Title</label>
+                                    <input type="text" class="form-control" placeholder="name" name="name">
+                                </div>
+                                <div class="col-2">
+                                    <label >Movie Type</label>                                
+                                        <select id="movieType" class="form-control" name="genre">
+                                            <option>Movie Type</option>
+                                            {% for list in subgroupmaster_ %}
+                                            <option value="{{list.SubGroup}}">{{ list.SubGroupName }}</option>
+                                            {% endfor %}
+                                        </select>                                
+                                </div>
+                                
+                                <div class="col-2">
+                                    <label >Poster File</label>
+                                    <input type="file"  id="poster" name="poster"> 
+                                </div>
+                                <div class="col-2">
+                                    <label >Movie Price</label>
+                                    <input type="number" class="form-control" placeholder="Price" name="Price">
+                                </div>
+                                
+                                <div class="col-2">
+                                    <label >Upload Date</label>
+                                    <input type="date" class="form-control" placeholder="rdate" name="rdate">
+                                </div>
+                            
+                            
+                            <div class="col-2">
+                                <label >Movie Duration</label>
+                                <input type="time" class="form-control" placeholder="Time" name="duration">
+                            </div>
+                        </div>
+                </div>
+                    
+                </div>
+
+                
+                <div class="row p-4">
+                    <div class="col-12">
+                            <div class="form-row justify-content-center">                                
+                                
+                                <div class="col-2">
+                                    <label >Movie Start Date</label>
+                                    <input type="date" class="form-control" placeholder="Date" name="d">
+                                </div>
+                                <div class="col-2">
+                                    <label >Movie End Date</label>
+                                    <input type="date" class="form-control" placeholder="Date" name="d">
+                                </div>
+
+                                <div class="col-2">
+                                    <label for="myfile" >Movie Upload</label>
+                                    <input type="file" id="myfile" name="myfile" > 
+                                </div>   
+                                
+                                <div class="col-6">
+                                    <label >Movie Trailer Link</label>
+                                    <input type="text" class="form-control" placeholder="trailer" name="trailer">
+                                </div>       
+                            </div>
+                            
+                    </div>
+                    
+                </div>              
+
+                <div class="row p-4">
+                    <div class="col-8">
+                        <div class="form-row">
+                            <div class="col-8">
+                                <label >Description</label>
+                                <textarea id="des" name="des" rows="4" cols="70"></textarea>
+
+                              
+                            </div>
+                     </div>
+                     <div class="col-2">                                
+                        <input type="submit" class="btn btn-block btn-primary">
+                    </div>
+
+
+                    </div>
+                    
+                </div>
+
+
+            </form>
+
+                {% for movie in list %}
+                <div class="col-3 poster p-0 shadow card text-center">
+                    <img src="/{{movie.movie__movie_poster}}" class="img-fluid" alt="Misisng Poster">
+                    <h5 class="p-3">{{movie.movie__movie_name}}</h5>
+                </div>
+                {% endfor %}
+            </div>
+
+
+            <div class="col-12 card round mt-2">
+                    <h3 class="">My All Shows </h3>
+                    <hr>
+                  
+                    <table class="table shadow text-center">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col" width="5%">ID</th>
+                                    <th scope="col">Movie</th> 
+                                                                     
+                                    <th scope="col">Release Date </th>
+                                    <th scope="col">Price</th>                                    
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for list in mov %}
+                                    <tr>
+                                        <td>{{ forloop.counter }} </td>
+                                        <td>
+                                            <a href="/moviesShow/{{list.movie}}">
+
+                                            {{list.movie_name}}
+                                                </a>
+                                         </td>
+                                            
+                                       
+                                        <td>{{list.movie_rdate}}</td>
+                                        
+                                        <td>Rs. {{list.price}}</td>                                        
+                                         
+                                    </tr>
+                                        {% endfor %}
+                            </tbody>
+                        </table>
+                </div>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block JQuery %}
+<script>
+</script>
+{% endblock %}
